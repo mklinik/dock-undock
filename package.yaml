@@ -21,13 +21,24 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- process
 
 library:
   source-dirs: src
 
 executables:
-  dock-undock-stack-exe:
-    main:                Main.hs
+  autodock:
+    main:                autodock.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - dock-undock-stack
+
+  dock:
+    main:                dock.hs
     source-dirs:         app
     ghc-options:
     - -threaded
