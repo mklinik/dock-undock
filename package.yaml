@@ -47,6 +47,16 @@ executables:
     dependencies:
     - dock-undock-stack
 
+  undock:
+    main:                undock.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - dock-undock-stack
+
 tests:
   dock-undock-stack-test:
     main:                Spec.hs
