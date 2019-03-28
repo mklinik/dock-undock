@@ -71,11 +71,8 @@ keyboardMisc = do
   callProcess "xkbset" ["ma", "60", "10", "10", "5", "2"]
   callProcess "xkbset" ["exp", "=m"]
 
-  -- mouse speed
-  -- My black cabled Logitech mouse
-  -- callProcess "xset" ["m", "5", "5"]
-  -- My wireless M705 Logitech mouse
-  callProcess "xset" ["m", "1/1", "9999"]
+  -- mouse acceleration
+  callProcess "xinput" ["--set-prop", "Logitech M705", "libinput Accel Profile Enabled", "0,", "1"]
 
   -- keyboard repeat rate
   callProcess "xset" ["r", "rate", "200", "50"]
