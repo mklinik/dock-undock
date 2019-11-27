@@ -33,5 +33,3 @@ disableAccelerationForAllPointers :: IO ()
 disableAccelerationForAllPointers = do
   pointerDevices <- allDeviceIds >>= accelDevices
   mapM_ disableAccelProfile pointerDevices
-
-main = disableAccelerationForAllPointers
