@@ -29,39 +29,10 @@ dock out = do
   screenSetup out
 
 keyboardSetup = do
-  keyboardLayout EN
   keyboardMisc
 
 pointerSetup = do
   disableAccelerationForAllPointers
-
-data Language = EN | RU
-  deriving (Show)
-
-currentKeyboard :: IO Language
-currentKeyboard = do
-  curKbd <- head <$> tail <$> words <$> head <$> filter (isPrefixOf "layout:") <$> lines <$> readProcess "setxkbmap" ["-query"] ""
-  return $ case curKbd of
-    "dvorak" -> EN
-    "ru" -> RU
-    _ -> EN
-
-toggleKeyboard :: IO ()
-toggleKeyboard = do
-  curKbd <- currentKeyboard
-  case curKbd of
-    EN -> keyboardLayout RU
-    RU -> keyboardLayout EN
-
-keyboardLayout lang =
-  -- keyboard layout
-  case lang of
-    EN -> do
-      callProcess "setxkbmap" ["dvorak"]
-      callCommand "xmodmap ~/.xmodmaprc"
-    RU -> do
-      callProcess "setxkbmap" ["ru", "-option", "compose:lwin"]
-      callCommand "xmodmap ~/.xmodmaprc_ru"
 
 keyboardMisc = do
   -- keyboard mouse aka mousekeys
