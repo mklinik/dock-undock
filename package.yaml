@@ -56,14 +56,3 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - dock-undock-stack
-
-tests:
-  dock-undock-stack-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - dock-undock-stack
