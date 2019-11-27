@@ -1,4 +1,5 @@
 .stack-work/
 dock-undock.cabal
 tags
+stack.yaml.lock
 *~
