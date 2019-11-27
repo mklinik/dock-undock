@@ -8,6 +8,7 @@ import Control.Applicative
 import Control.Monad
 
 import Xrandr
+import Xinput
 
 undock :: XrandrOutput -> IO ()
 undock out = do
@@ -23,12 +24,16 @@ screenTeardown out = do
 dock :: XrandrOutput -> IO ()
 dock out = do
   keyboardSetup
+  pointerSetup
   bellSetup
   screenSetup out
 
 keyboardSetup = do
   keyboardLayout EN
   keyboardMisc
+
+pointerSetup = do
+  disableAccelerationForAllPointers
 
 data Language = EN | RU
   deriving (Show)
@@ -70,9 +75,6 @@ keyboardMisc = do
   callProcess "xkbset" ["m"]
   callProcess "xkbset" ["ma", "60", "10", "10", "5", "2"]
   callProcess "xkbset" ["exp", "=m"]
-
-  -- mouse acceleration
-  callProcess "xinput" ["--set-prop", "Logitech M705", "libinput Accel Profile Enabled", "0,", "1"]
 
   -- keyboard repeat rate
   callProcess "xset" ["r", "rate", "200", "50"]
