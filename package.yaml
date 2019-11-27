@@ -1,6 +1,6 @@
-name:                dock-undock-stack
+name:                dock-undock
 version:             0.1.0.0
-github:              "githubuser/dock-undock-stack"
+github:              "githubuser/dock-undock"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/dock-undock-stack#readme>
+description:         Please see the README on GitHub at <https://github.com/githubuser/dock-undock#readme>
 
 dependencies:
 - base >= 4.7 && < 5
@@ -35,7 +35,7 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - dock-undock-stack
+    - dock-undock
 
   dock:
     main:                dock.hs
@@ -45,7 +45,7 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - dock-undock-stack
+    - dock-undock
 
   undock:
     main:                undock.hs
@@ -55,4 +55,4 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - dock-undock-stack
+    - dock-undock
