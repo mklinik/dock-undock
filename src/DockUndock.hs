@@ -37,6 +37,8 @@ pointerSetup = do
 keyboardMisc = do
   -- keyboard repeat rate
   callProcess "xset" ["r", "rate", "200", "50"]
+  -- keyboard map
+  callProcess "xmodmap" ["~/.xmodmaprc"]
 
 -- disable all beeps
 bellSetup = do
