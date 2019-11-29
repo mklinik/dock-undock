@@ -38,7 +38,8 @@ keyboardMisc = do
   -- keyboard repeat rate
   callProcess "xset" ["r", "rate", "200", "50"]
   -- keyboard map
-  callProcess "xmodmap" ["~/.xmodmaprc"]
+  -- callCommand is needed for shell expansion of ~
+  callCommand "xmodmap ~/.xmodmaprc"
 
 -- disable all beeps
 bellSetup = do
