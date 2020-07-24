@@ -12,9 +12,9 @@ import Xinput
 
 undock :: XrandrOutput -> IO ()
 undock out = do
-  umountDisks
   screenTeardown out
 
+-- seems to be old
 umountDisks = spawnProcess "umount" ["/media/dock"] >>= waitForProcess >> return ()
 
 screenTeardown out = do
