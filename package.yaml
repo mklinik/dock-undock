@@ -20,35 +20,15 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/dock-undock#readme>
 
 dependencies:
-- base >= 4.7 && < 5
+- base >= 4.7
 - process
 
 library:
   source-dirs: src
 
 executables:
-  autodock:
-    main:                autodock.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - dock-undock
-
   dock:
-    main:                dock.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - dock-undock
-
-  undock:
-    main:                undock.hs
+    main:                Main.hs
     source-dirs:         app
     ghc-options:
     - -threaded
