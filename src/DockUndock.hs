@@ -29,17 +29,17 @@ dock out = do
   screenSetup out
 
 keyboardSetup = do
-  keyboardMisc
-
-pointerSetup = do
-  disableAccelerationForAllPointers
-
-keyboardMisc = do
   -- keyboard repeat rate
   callProcess "xset" ["r", "rate", "200", "50"]
   -- keyboard map
+  callProcess "setxkbmap" ["dvorak"]
   -- callCommand is needed for shell expansion of ~
   callCommand "xmodmap ~/.xmodmaprc"
+
+pointerSetup = do
+  disableAccelerationForAllPointers
+  -- otherwise you get the ugly X
+  callProcess "xsetroot" ["-cursor_name", "left_ptr"]
 
 -- disable all beeps
 bellSetup = do

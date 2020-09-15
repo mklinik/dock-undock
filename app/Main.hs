@@ -20,4 +20,6 @@ main = do
       if isDocked out
         then undock out
         else dock out
-    Mouse -> pointerSetup
+    Mouse -> do
+      pointerSetup
+      keyboardSetup

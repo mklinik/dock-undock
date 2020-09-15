@@ -21,7 +21,7 @@ options = [
   , Option [] ["dock"] (NoArg  (\opts -> opts { mode = Dock })) "dock laptop"
   , Option [] ["undock"] (NoArg  (\opts -> opts { mode = Undock })) "undock laptop"
   , Option [] ["toggle"] (NoArg  (\opts -> opts { mode = Autodock })) "automatically determine if it should be dock or undock"
-  , Option [] ["mouse"] (NoArg  (\opts -> opts { mode = Mouse })) "only perform mouse pointer setup"
+  , Option [] ["mouse"] (NoArg  (\opts -> opts { mode = Mouse })) "only perform mouse pointer and keyboard setup"
   ]
 
 get :: [String] -> IO Options
