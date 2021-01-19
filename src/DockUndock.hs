@@ -8,14 +8,10 @@ import Control.Applicative
 import Control.Monad
 
 import Xrandr
-import Xinput
 
 undock :: XrandrOutput -> IO ()
 undock out = do
   screenTeardown out
-
--- seems to be old
-umountDisks = spawnProcess "umount" ["/media/dock"] >>= waitForProcess >> return ()
 
 screenTeardown :: XrandrOutput -> IO ()
 screenTeardown out = do
@@ -37,7 +33,6 @@ keyboardSetup = do
   callCommand "xmodmap ~/.xmodmaprc"
 
 pointerSetup = do
-  disableAccelerationForAllPointers
   -- otherwise you get the ugly X
   callProcess "xsetroot" ["-cursor_name", "left_ptr"]
 
