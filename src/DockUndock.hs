@@ -17,9 +17,9 @@ undock out = do
 -- seems to be old
 umountDisks = spawnProcess "umount" ["/media/dock"] >>= waitForProcess >> return ()
 
+screenTeardown :: XrandrOutput -> IO ()
 screenTeardown out = do
-  mapM_ displayOff $ otherDisplays out
-  displayAuto builtinDisplay
+  callXrandr $ concatMap displayOff (otherDisplays out) <> displayAuto builtinDisplay
 
 dock :: XrandrOutput -> IO ()
 dock out = do
@@ -47,5 +47,5 @@ bellSetup = do
   callProcess "xset" ["-b"]
 
 screenSetup out = do
-  unless (null $ otherDisplays out) $ displayOff builtinDisplay
-  mapM_ displayAuto $ otherDisplays out
+  unless (null $ otherDisplays out) $
+    callXrandr $ displayOff builtinDisplay <> concatMap displayAuto (otherDisplays out)

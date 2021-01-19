@@ -8,14 +8,15 @@ import Data.Char
 newtype XrandrOutput = XrandrOutput [String]
 
 -- The name of my laptop's built-in screen
-builtinDisplay = "LVDS-1"
+builtinDisplay :: String
+builtinDisplay = "eDP1"
 
 -- Queries xrandr
 -- The output is supposed to be used with the other functions that take XrandrOutput arguments
 xrandr :: IO XrandrOutput
 xrandr = XrandrOutput . lines <$> readProcess "xrandr" ["-q"] ""
 
--- Gets all connected displays other than LVDS1
+-- Gets all connected displays other than the builtin one
 otherDisplays :: XrandrOutput -> [String]
 otherDisplays (XrandrOutput out) =
  let
@@ -44,5 +45,11 @@ currentMode display out =
 isDocked :: XrandrOutput -> Bool
 isDocked out = maybe True (const False) $ currentMode builtinDisplay out
 
-displayAuto display = callProcess "xrandr" ["--output", display, "--auto"]
-displayOff  display = callProcess "xrandr" ["--output", display, "--off"]
+-- these should be used to build all arguments for xrandr, to be passed in one single command
+displayAuto :: String -> [String]
+displayAuto display = ["--output", display, "--auto"]
+displayOff :: String -> [String]
+displayOff  display = ["--output", display, "--off"]
+
+callXrandr :: [String] -> IO ()
+callXrandr  args = callProcess "xrandr" args
