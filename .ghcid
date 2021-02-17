@@ -1,0 +1,1 @@
+--command=stack ghci dock-undock --outputfile=errors.err --lint=make-tags-haskell.sh
