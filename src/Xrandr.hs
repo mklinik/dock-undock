@@ -5,11 +5,9 @@ import Control.Applicative
 import Data.List
 import Data.Char
 
-newtype XrandrOutput = XrandrOutput [String]
+import Config
 
--- The name of my laptop's built-in screen
-builtinDisplay :: String
-builtinDisplay = "eDP1"
+newtype XrandrOutput = XrandrOutput [String]
 
 -- Queries xrandr
 -- The output is supposed to be used with the other functions that take XrandrOutput arguments
@@ -50,6 +48,10 @@ displayAuto :: String -> [String]
 displayAuto display = ["--output", display, "--auto"]
 displayOff :: String -> [String]
 displayOff  display = ["--output", display, "--off"]
+displayLeftOf :: String -> String -> [String]
+displayLeftOf leftD rightD = ["--output", leftD, "--left-of", rightD]
+displayPrimary :: String -> [String]
+displayPrimary display = ["--output", display, "--primary"]
 
 callXrandr :: [String] -> IO ()
 callXrandr  args = callProcess "xrandr" args

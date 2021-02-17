@@ -8,6 +8,7 @@ import Control.Applicative
 import Control.Monad
 
 import Xrandr
+import Config
 
 undock :: XrandrOutput -> IO ()
 undock out = do
@@ -41,6 +42,15 @@ bellSetup = do
   callProcess "xset" ["b", "off"]
   callProcess "xset" ["-b"]
 
-screenSetup out = do
-  unless (null $ otherDisplays out) $
-    callXrandr $ displayOff builtinDisplay <> concatMap displayAuto (otherDisplays out)
+screenSetup :: XrandrOutput -> IO ()
+screenSetup out = case (otherDisplays out) of
+  -- single otherD is the most common case
+  [otherD] -> callXrandr $
+       displayAuto builtinDisplay
+    <> displayAuto otherD
+    <> otherD `displayLeftOf` builtinDisplay
+    <> displayPrimary otherD
+  -- this case handles empty and multiple otherDisplays
+  -- It's not clear which one should be primary, and how they should be
+  -- positioned. Probably needs manual config.
+  _ -> callXrandr $ displayOff builtinDisplay <> concatMap displayAuto (otherDisplays out)
