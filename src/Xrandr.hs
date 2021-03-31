@@ -4,6 +4,7 @@ import System.Process
 import Control.Applicative
 import Data.List
 import Data.Char
+import Data.Maybe (isJust)
 
 import Config
 
@@ -39,9 +40,11 @@ currentMode display out =
     [] -> Nothing
     (m:_) -> Just m
 
--- We define the machine as docked if the built-in screen is off
+-- We define the machine as docked if there exists an otherDisplay that is currently switched on
 isDocked :: XrandrOutput -> Bool
-isDocked out = maybe True (const False) $ currentMode builtinDisplay out
+isDocked out = any isJust otherModes
+  where
+  otherModes = [currentMode disp out | disp <- otherDisplays out]
 
 -- these should be used to build all arguments for xrandr, to be passed in one single command
 displayAuto :: String -> [String]

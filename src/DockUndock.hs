@@ -50,7 +50,9 @@ screenSetup out = case (otherDisplays out) of
     <> displayAuto otherD
     <> otherD `displayLeftOf` builtinDisplay
     <> displayPrimary otherD
-  -- this case handles empty and multiple otherDisplays
+  -- no otherDisplays: just switch on the builtin one
+  [] -> callXrandr $ displayAuto builtinDisplay
+  -- multiple otherDisplays
   -- It's not clear which one should be primary, and how they should be
   -- positioned. Probably needs manual config.
-  _ -> callXrandr $ displayOff builtinDisplay <> concatMap displayAuto (otherDisplays out)
+  _ -> callXrandr $ displayAuto builtinDisplay <> concatMap displayAuto (otherDisplays out)
