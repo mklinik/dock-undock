@@ -6,6 +6,7 @@ import Data.List
 import System.Process
 import Control.Applicative
 import Control.Monad
+import Control.Exception
 
 import Xrandr
 import Config
@@ -36,6 +37,16 @@ keyboardSetup = do
 pointerSetup = do
   -- otherwise you get the ugly X
   callProcess "xsetroot" ["-cursor_name", "left_ptr"]
+  -- Ideally these would be udev rules, but who wants to mess with that?
+  --  No! Udev rules are also evaluated at boot, so if your mouse is plugged in at boot, you can't
+  --  change libinput settings. It needs to be configured in xorg instead. I think I have a flat
+  --  profile for all devices.
+  -- When the mouse is not plugged in, these throw exceptions, which I want to ignore, because the
+  -- commands themselves print an error message
+  try (callProcess "xinput" ["--set-prop", "Logitech M705", "libinput Accel Profile Enabled", "1,", "0"])
+    :: IO (Either SomeException ())
+  try (callProcess "xinput" ["--set-prop", "Logitech M705", "libinput Accel Speed", "1.0"])
+    :: IO (Either SomeException ())
 
 -- disable all beeps
 bellSetup = do
