@@ -2,4 +2,8 @@ module Config where
 
 -- The name of my laptop's built-in screen
 builtinDisplay :: String
-builtinDisplay = "eDP-1"
+builtinDisplay = "eDP1"
+
+-- The name of my dock's screens; depends on whether I have connected the left or right socket
+dockDisplays :: [String]
+dockDisplays = ["DP1-2", "DP3-2"]

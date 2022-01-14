@@ -55,12 +55,17 @@ bellSetup = do
 
 screenSetup :: XrandrOutput -> IO ()
 screenSetup out = case (otherDisplays out) of
+  -- My Thunderbolt dock
+  [otherD]
+    | otherD `elem` dockDisplays -> callXrandr $
+         displayAuto otherD
+      <> ["--output", builtinDisplay, "--off"]
   -- single otherD is the most common case
-  [otherD] -> callXrandr $
-       displayAuto builtinDisplay
-    <> displayAuto otherD
-    <> otherD `displayLeftOf` builtinDisplay
-    <> displayPrimary otherD
+    | otherwise -> callXrandr $
+         displayAuto builtinDisplay
+      <> displayAuto otherD
+      <> otherD `displayLeftOf` builtinDisplay
+      <> displayPrimary otherD
   -- no otherDisplays: just switch on the builtin one
   [] -> callXrandr $ displayAuto builtinDisplay
   -- multiple otherDisplays
