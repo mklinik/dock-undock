@@ -22,13 +22,13 @@ main = do
     opts <- Options.get args
     case Options.mode opts of
       Help -> Options.printHelp
-      Dock -> xrandr >>= dock
+      Dock -> xrandr >>= dock opts
       Undock -> xrandr >>= undock
       Autodock -> do
         out <- xrandr
         if isDocked out
           then undock out
-          else dock out
+          else dock opts out
       Mouse -> do
         pointerSetup
         keyboardSetup

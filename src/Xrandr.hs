@@ -55,6 +55,10 @@ displayLeftOf :: String -> String -> [String]
 displayLeftOf leftD rightD = ["--output", leftD, "--left-of", rightD]
 displayPrimary :: String -> [String]
 displayPrimary display = ["--output", display, "--primary"]
+displayMaybeMode :: Maybe String -> String -> [String]
+displayMaybeMode mbMode display = case mbMode of
+  Nothing -> displayAuto display
+  Just mode -> ["--output", display, "--mode", mode]
 
 callXrandr :: [String] -> IO ()
 callXrandr  args = callProcess "xrandr" args

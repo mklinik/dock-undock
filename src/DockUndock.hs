@@ -10,6 +10,7 @@ import Control.Exception
 
 import Xrandr
 import Config
+import Options
 
 undock :: XrandrOutput -> IO ()
 undock out = do
@@ -19,12 +20,12 @@ screenTeardown :: XrandrOutput -> IO ()
 screenTeardown out = do
   callXrandr $ concatMap displayOff (otherDisplays out) <> displayAuto builtinDisplay
 
-dock :: XrandrOutput -> IO ()
-dock out = do
+dock :: Options -> XrandrOutput -> IO ()
+dock opts out = do
   keyboardSetup
   pointerSetup
   bellSetup
-  screenSetup out
+  screenSetup opts out
 
 keyboardSetup = do
   -- keyboard repeat rate
@@ -53,17 +54,17 @@ bellSetup = do
   callProcess "xset" ["b", "off"]
   callProcess "xset" ["-b"]
 
-screenSetup :: XrandrOutput -> IO ()
-screenSetup out = case (otherDisplays out) of
+screenSetup :: Options -> XrandrOutput -> IO ()
+screenSetup opts out = case (otherDisplays out) of
   -- My Thunderbolt dock
   [otherD]
     | otherD `elem` dockDisplays -> callXrandr $
-         displayAuto otherD
+         displayMaybeMode (mainDisplayResolution opts) otherD
       <> ["--output", builtinDisplay, "--off"]
   -- single otherD is the most common case
     | otherwise -> callXrandr $
          displayAuto builtinDisplay
-      <> displayAuto otherD
+      <> displayMaybeMode (mainDisplayResolution opts) otherD
       <> otherD `displayLeftOf` builtinDisplay
       <> displayPrimary otherD
   -- no otherDisplays: just switch on the builtin one
