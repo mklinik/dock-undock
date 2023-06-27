@@ -29,11 +29,12 @@ dock opts out = do
 
 keyboardSetup = do
   -- keyboard repeat rate
-  callProcess "xset" ["r", "rate", "200", "50"]
+  -- callProcess "xset" ["r", "rate", "200", "50"]
   -- keyboard map
-  callProcess "setxkbmap" ["dvorak"]
+  -- callProcess "setxkbmap" ["dvorak"]
   -- callCommand is needed for shell expansion of ~
-  callCommand "xmodmap ~/.xmodmaprc"
+  -- callCommand "xmodmap ~/.xmodmaprc"
+  return ()
 
 pointerSetup = do
   -- otherwise you get the ugly X
