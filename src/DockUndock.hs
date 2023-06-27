@@ -55,19 +55,17 @@ bellSetup = do
   callProcess "xset" ["-b"]
 
 screenSetup :: Options -> XrandrOutput -> IO ()
-screenSetup opts out = case (otherDisplays out) of
-  -- My Thunderbolt dock
+screenSetup opts out = case otherDisplays out of
   [otherD]
     | otherD `elem` dockDisplays -> callXrandr $
          displayMaybeMode (mainDisplayResolution opts) otherD
+      <> displayMaybeScale (scale opts) otherD
       <> ["--output", builtinDisplay, "--off"]
-  -- single otherD is the most common case
     | otherwise -> callXrandr $
          displayAuto builtinDisplay
       <> displayMaybeMode (mainDisplayResolution opts) otherD
       <> otherD `displayLeftOf` builtinDisplay
       <> displayPrimary otherD
-  -- no otherDisplays: just switch on the builtin one
   [] -> callXrandr $ displayAuto builtinDisplay
   -- multiple otherDisplays
   -- It's not clear which one should be primary, and how they should be

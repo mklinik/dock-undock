@@ -9,12 +9,14 @@ data Mode = Dock | Undock | Autodock | Mouse | Help
 data Options = Options
   { mode :: Mode
   , mainDisplayResolution :: Maybe String
+  , scale :: Maybe String
   }
 
 defaultOptions :: Options
 defaultOptions  = Options
   { mode = Dock
   , mainDisplayResolution = Nothing
+  , scale = Nothing
   }
 
 options :: [OptDescr (Options -> Options)]
@@ -25,7 +27,7 @@ options = [
   , Option [] ["toggle"] (NoArg  (\opts -> opts { mode = Autodock })) "automatically determine if it should be dock or undock"
   , Option [] ["mouse"] (NoArg  (\opts -> opts { mode = Mouse })) "only perform mouse pointer and keyboard setup"
   , Option [] ["resolution"] (ReqArg (\mode opts -> opts { mainDisplayResolution = Just mode } ) "RESOLUTION") "set main display to RESOLUTION"
-  , Option [] ["chordify"] (NoArg (\opts -> opts { mode = Dock, mainDisplayResolution = Just "2560x1440" } )) "like --dock but set main display to 2560x1440"
+  , Option [] ["chordify"] (NoArg (\opts -> opts { mode = Dock, scale = Just "0.7" } )) "like --dock but use scaling to have larger UI"
   ]
 
 get :: [String] -> IO Options
