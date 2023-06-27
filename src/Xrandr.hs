@@ -59,10 +59,6 @@ displayMaybeMode :: Maybe String -> String -> [String]
 displayMaybeMode mbMode display = case mbMode of
   Nothing -> displayAuto display
   Just mode -> ["--output", display, "--mode", mode]
-displayMaybeScale :: Maybe String -> String -> [String]
-displayMaybeScale mbScale display = case mbScale of
-  Nothing -> []
-  Just scale -> ["--output", display, "--scale", scale]
 
 callXrandr :: [String] -> IO ()
 callXrandr  args = callProcess "xrandr" args
