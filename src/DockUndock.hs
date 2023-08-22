@@ -11,6 +11,7 @@ import Control.Exception
 import Xrandr
 import Config
 import Options
+import Log
 
 undock :: XrandrOutput -> IO ()
 undock out = do
@@ -20,12 +21,12 @@ screenTeardown :: XrandrOutput -> IO ()
 screenTeardown out = do
   callXrandr $ concatMap displayOff (otherDisplays out) <> displayAuto builtinDisplay
 
-dock :: Options -> XrandrOutput -> IO ()
-dock opts out = do
+dock :: Options -> Logger -> XrandrOutput -> IO ()
+dock opts log out = do
   keyboardSetup
   pointerSetup
   bellSetup
-  screenSetup opts out
+  screenSetup opts log out
 
 keyboardSetup = do
   -- keyboard repeat rate
@@ -45,19 +46,25 @@ bellSetup = do
   callProcess "xset" ["b", "off"]
   callProcess "xset" ["-b"]
 
-screenSetup :: Options -> XrandrOutput -> IO ()
-screenSetup opts out = case (otherDisplays out) of
+screenSetup :: Options -> Logger -> XrandrOutput -> IO ()
+screenSetup opts log out = case (otherDisplays out) of
   -- My Thunderbolt dock
   [otherD]
-    | otherD `elem` dockDisplays -> callXrandr $
-         displayMaybeMode (mainDisplayResolution opts) otherD
-      <> ["--output", builtinDisplay, "--off"]
+    | otherD `elem` dockDisplays -> do
+        let args =
+                 displayMaybeMode (mainDisplayResolution opts) otherD
+              <> ["--output", builtinDisplay, "--off"]
+        logg log $ "command: " <> show args
+        callXrandr args
   -- single otherD is the most common case
-    | otherwise -> callXrandr $
-         displayAuto builtinDisplay
-      <> displayMaybeMode (mainDisplayResolution opts) otherD
-      <> otherD `displayLeftOf` builtinDisplay
-      <> displayPrimary otherD
+    | otherwise -> do
+        let args =
+                 displayAuto builtinDisplay
+              <> displayMaybeMode (mainDisplayResolution opts) otherD
+              <> otherD `displayLeftOf` builtinDisplay
+              <> displayPrimary otherD
+        logg log $ "command: " <> show args
+        callXrandr args
   -- no otherDisplays: just switch on the builtin one
   [] -> callXrandr $ displayAuto builtinDisplay
   -- multiple otherDisplays

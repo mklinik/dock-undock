@@ -5,11 +5,13 @@ import System.Console.GetOpt
 import System.Exit
 
 data Mode = Dock | Undock | Autodock | Mouse | Help
+  deriving (Show)
 
 data Options = Options
   { mode :: Mode
   , mainDisplayResolution :: Maybe String
   }
+  deriving (Show)
 
 defaultOptions :: Options
 defaultOptions  = Options
